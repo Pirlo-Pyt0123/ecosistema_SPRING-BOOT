@@ -1,0 +1,48 @@
+server:
+  port: 9191
+
+## Enable service discovery (with Eureka)
+## lower-case-service-id is mandatory, otherwise is retrieved in upper case from Eureka
+spring:
+  application:
+    name: GatewayTranscripcionPeticiones
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true #compone de forma automatica la tabla de enrutamiento usando la tabla de eureka
+          lower-case-service-id: true  # rutas en lower case
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors: ## CORS Configuration
+        cors-configurations:
+          '[/**]': ## For all routes
+            allowedOrigins: ${ALLOWED_ORIGINS:*} # With '*' we allow all origins. We can restrict by indicating domains or ip + port, e.g. http://localhost:3000 (where our front is, or a Vercel domain)
+            allowedHeaders: "*" ## All headers allowed
+            allowedMethods:
+              #- GET
+              - POST #Solo dejamos habilitado este método
+              #- PUT
+              #- DELETE
+              #- PATCH
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, gateway
+  endpoint:
+    gateway:
+      enabled: ${ROUTE_TABLES_ENABLED:true}
+
+## Classic Eureka configuration
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: ${HOSTNAME:127.0.0.1}
+
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka}

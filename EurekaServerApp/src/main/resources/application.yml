@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: EurekaServerApp
+server:
+  port: ${PORT:8761}
+
+## Eureka Server Configuration
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  instance:
+    hostname: ${EUREKA_HOST:127.0.0.1}
+  server:
+    renewal-percent-threshold: 0.90
