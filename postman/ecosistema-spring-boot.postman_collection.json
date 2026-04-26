@@ -1,0 +1,314 @@
+{
+  "info": {
+    "name": "Ecosistema Spring Boot - Lab Backend FullStack",
+    "description": "Colección de endpoints para los microservicios ms-books-catalogue y MsBookPayments. Acceso vía CloudGatewayProxy en puerto 8181.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ms-books-catalogue",
+      "item": [
+        {
+          "name": "GET todos los libros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros"]
+            },
+            "description": "Retorna todos los libros sin filtros"
+          }
+        },
+        {
+          "name": "GET libros con filtros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros?titulo=Harry&autor=Rowling&visible=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros"],
+              "query": [
+                { "key": "titulo", "value": "Harry" },
+                { "key": "autor", "value": "Rowling" },
+                { "key": "editorial", "value": "", "disabled": true },
+                { "key": "anio", "value": "", "disabled": true },
+                { "key": "genero", "value": "", "disabled": true },
+                { "key": "visible", "value": "true" }
+              ]
+            },
+            "description": "Busca libros por filtros combinados: titulo, autor, editorial, anio, genero, visible"
+          }
+        },
+        {
+          "name": "GET libro por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "1"]
+            },
+            "description": "Retorna un libro por su ID. Cambia el 1 por el ID real."
+          }
+        },
+        {
+          "name": "GET libro por ID - no encontrado (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/9999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "9999"]
+            },
+            "description": "ID inexistente - debe retornar 404 Not Found"
+          }
+        },
+        {
+          "name": "POST crear libro",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"El Quijote\",\n  \"autor\": \"Miguel de Cervantes\",\n  \"editorial\": \"Anaya\",\n  \"anio\": 1605,\n  \"isbn\": \"978-84-667-9401-2\",\n  \"resumen\": \"Novela clásica de la literatura española\",\n  \"genero\": \"Novela\",\n  \"precio\": 19.99,\n  \"imagen\": \"https://ejemplo.com/quijote.jpg\",\n  \"stock\": 10,\n  \"visible\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros"]
+            },
+            "description": "Crea un nuevo libro. Retorna 201 Created con el libro creado."
+          }
+        },
+        {
+          "name": "POST crear libro - datos inválidos (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"autor\": \"\",\n  \"editorial\": \"\",\n  \"genero\": \"\",\n  \"precio\": null,\n  \"stock\": null,\n  \"visible\": null\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros"]
+            },
+            "description": "Campos obligatorios vacíos - debe retornar 400 Bad Request"
+          }
+        },
+        {
+          "name": "PUT actualizar libro completo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"El Quijote - Edición actualizada\",\n  \"autor\": \"Miguel de Cervantes\",\n  \"editorial\": \"Anaya\",\n  \"anio\": 1605,\n  \"isbn\": \"978-84-667-9401-2\",\n  \"resumen\": \"Edición revisada y actualizada\",\n  \"genero\": \"Novela\",\n  \"precio\": 24.99,\n  \"imagen\": \"https://ejemplo.com/quijote2.jpg\",\n  \"stock\": 15,\n  \"visible\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "1"]
+            },
+            "description": "Actualiza todos los campos de un libro. Retorna 200 OK con el libro actualizado."
+          }
+        },
+        {
+          "name": "PATCH actualizar libro parcial",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"stock\": 5, \"visible\": false }"
+            },
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "1"]
+            },
+            "description": "Actualiza solo los campos indicados usando JSON Merge Patch. Retorna 200 OK."
+          }
+        },
+        {
+          "name": "DELETE eliminar libro",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "1"]
+            },
+            "description": "Elimina un libro por ID. Retorna 200 OK si existe, 404 si no."
+          }
+        },
+        {
+          "name": "DELETE libro no encontrado (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8181/ms-books-catalogue/libros/9999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["ms-books-catalogue", "libros", "9999"]
+            },
+            "description": "ID inexistente - debe retornar 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MsBookPayments",
+      "item": [
+        {
+          "name": "POST registrar compra - exitosa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"libroId\": \"1\",\n  \"cantidad\": 2\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/msbookpayments/api/compras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["msbookpayments", "api", "compras"]
+            },
+            "description": "Registra una compra válida. El libro debe existir, estar visible y tener stock suficiente. Retorna 201 Created."
+          }
+        },
+        {
+          "name": "POST registrar compra - item inválido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"libroId\": \"9999\",\n  \"cantidad\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/msbookpayments/api/compras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["msbookpayments", "api", "compras"]
+            },
+            "description": "Libro inexistente - debe retornar 400 Bad Request con mensaje 'Item no válido, no visible o fuera de stock'."
+          }
+        },
+        {
+          "name": "POST registrar compra - sin stock (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"libroId\": \"1\",\n  \"cantidad\": 9999\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8181/msbookpayments/api/compras",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8181",
+              "path": ["msbookpayments", "api", "compras"]
+            },
+            "description": "Cantidad mayor al stock disponible - debe retornar 400 Bad Request."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Health - ms-books-catalogue",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "health"]
+            },
+            "description": "Estado de salud del microservicio catálogo (directo, sin gateway)"
+          }
+        },
+        {
+          "name": "Health - MsBookPayments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:7171/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "7171",
+              "path": ["actuator", "health"]
+            },
+            "description": "Estado de salud del microservicio pagos (directo, sin gateway)"
+          }
+        },
+        {
+          "name": "Eureka Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8761",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761",
+              "path": []
+            },
+            "description": "Panel de Eureka - muestra los microservicios registrados"
+          }
+        }
+      ]
+    }
+  ]
+}
