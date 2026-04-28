@@ -1,6 +1,11 @@
 package com.unir.ms_books_catalogue.data.utils;
 
-public class Constantes {
+public final class Constantes {
+
+    private Constantes() {
+        throw new UnsupportedOperationException("Clase de constantes");
+    }
+
     public static final String TITULO = "titulo";
     public static final String AUTOR = "autor";
     public static final String EDITORIAL = "editorial";

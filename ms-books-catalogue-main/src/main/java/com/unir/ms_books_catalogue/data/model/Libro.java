@@ -5,6 +5,8 @@ import com.unir.ms_books_catalogue.data.utils.Constantes;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "libros")
 @Getter
@@ -55,19 +57,18 @@ public class Libro {
     @Column(name = Constantes.VALORACION)
     private Integer valoracion;
 
-    public void update(LibroDto libroDto){
-        this.titulo = libroDto.getTitulo();
-        this.autor = libroDto.getAutor();
-        this.editorial = libroDto.getEditorial();
-        this.anio = libroDto.getAnio();
-        this.isbn = libroDto.getIsbn();
-        this.resumen = libroDto.getResumen();
-        this.genero = libroDto.getGenero();
-        this.precio = libroDto.getPrecio();
-        this.imagen = libroDto.getImagen();
-        this.stock = libroDto.getStock();
-        this.visible = libroDto.getVisible();
-        this.valoracion = libroDto.getValoracion();
+    public void update(LibroDto libroDto) {
+        Optional.ofNullable(libroDto.getTitulo()).ifPresent(titulo -> this.titulo = String.valueOf(titulo));
+        Optional.ofNullable(libroDto.getAutor()).ifPresent(autor -> this.autor = String.valueOf(autor));
+        Optional.ofNullable(libroDto.getEditorial()).ifPresent(editorial -> this.editorial = String.valueOf(editorial));
+        Optional.ofNullable(libroDto.getAnio()).ifPresent(anio -> this.anio = (Integer) anio);
+        Optional.ofNullable(libroDto.getIsbn()).ifPresent(isbn -> this.isbn = String.valueOf(isbn));
+        Optional.ofNullable(libroDto.getResumen()).ifPresent(resumen -> this.resumen = String.valueOf(resumen));
+        Optional.ofNullable(libroDto.getGenero()).ifPresent(genero -> this.genero = String.valueOf(genero));
+        Optional.ofNullable(libroDto.getPrecio()).ifPresent(precio -> this.precio = (Float) precio);
+        Optional.ofNullable(libroDto.getImagen()).ifPresent(imagen -> this.imagen = String.valueOf(imagen));
+        Optional.ofNullable(libroDto.getStock()).ifPresent(stock -> this.stock = (Integer) stock);
+        Optional.ofNullable(libroDto.getVisible()).ifPresent(visible -> this.visible = (Boolean) visible);
+        Optional.ofNullable(libroDto.getValoracion()).ifPresent(valoracion -> this.valoracion = (Integer) valoracion);
     }
-
 }

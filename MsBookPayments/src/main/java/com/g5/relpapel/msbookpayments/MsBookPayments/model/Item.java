@@ -2,11 +2,15 @@ package com.g5.relpapel.msbookpayments.MsBookPayments.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Modelo del Item a vender, este no mapea de la base de datos.
  */
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Item {
     private String id;
