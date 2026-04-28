@@ -50,30 +50,38 @@ public class LibrosServiceImpl implements LibrosService {
 
     @Override
     public Libro crearLibro(LibroDto libroCrear) {
-        if (libroCrear != null && StringUtils.hasLength(libroCrear.getTitulo().trim())
-                && StringUtils.hasLength(libroCrear.getAutor().trim())
-                && StringUtils.hasLength(libroCrear.getEditorial().trim())
-                && StringUtils.hasLength(libroCrear.getGenero().trim())
+        if (libroCrear == null) {
+            return null;
+        }
+        String titulo = libroCrear.getTitulo();
+        String autor = libroCrear.getAutor();
+        String editorial = libroCrear.getEditorial();
+        String genero = libroCrear.getGenero();
+
+        if (titulo != null && StringUtils.hasLength(titulo.trim())
+                && autor != null && StringUtils.hasLength(autor.trim())
+                && editorial != null && StringUtils.hasLength(editorial.trim())
+                && genero != null && StringUtils.hasLength(genero.trim())
                 && libroCrear.getPrecio() != null
                 && libroCrear.getStock() != null
                 && libroCrear.getVisible() != null) {
+
             Libro libro = Libro.builder()
-                    .titulo(libroCrear.getTitulo())
-                    .autor(libroCrear.getAutor())
-                    .editorial(libroCrear.getEditorial())
+                    .titulo(titulo)
+                    .autor(autor)
+                    .editorial(editorial)
                     .anio(libroCrear.getAnio())
                     .isbn(libroCrear.getIsbn())
                     .resumen(libroCrear.getResumen())
-                    .genero(libroCrear.getGenero())
+                    .genero(genero)
                     .precio(libroCrear.getPrecio())
                     .imagen(libroCrear.getImagen())
                     .stock(libroCrear.getStock())
                     .visible(libroCrear.getVisible())
                     .build();
             return repository.save(libro);
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
